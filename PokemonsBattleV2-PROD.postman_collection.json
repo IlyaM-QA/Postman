@@ -1,0 +1,1002 @@
+{
+	"info": {
+		"_postman_id": "ba161720-28bf-4c91-9930-079597086c34",
+		"name": "PokemonsBattleV2-PROD",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32338073"
+	},
+	"item": [
+		{
+			"name": "1. POST /trainers/reg",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"trainer_token\": \"{{trainer_token}}\",\r\n    \"email\": \"YOUR_EMAIL@DOMAIN.COM\",\r\n    \"password\": \"YOUR_PASSWORD\"\r\n}"
+				},
+				"url": {
+					"raw": "{{host}}/trainers/reg",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"trainers",
+						"reg"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. POST /trainers/confirm_email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Copy trainer_id in collectionVariables\", function () {\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.collectionVariables.set(\"trainer_id\", jsonData.id);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"trainer_token\": \"{{trainer_token}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/trainers/confirm_email",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"trainers",
+						"confirm_email"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. PUT /trainers/edit_password",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "YOUR_TRAINER_TOKEN",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "trainer_token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"password_old\": \"YOUR_PASSWORD\",\r\n    \"password_new\": \"YOUR_NEW_PASSWORD\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/trainers/edit_password",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"trainers",
+						"edit_password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. GET /trainers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/trainers",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"trainers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5. PUT /trainers",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "YOUR_TRAINER_TOKEN",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "trainer_token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"NEW_TRAINER_NAME\",\r\n    \"city\": \"NEW_CITY_NAME\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/trainers",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"trainers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6. PATCH /trainers",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "YOUR_TRAINER_TOKEN",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "trainer_token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"NEW_TRAINER_NAME\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/trainers",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"trainers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7. POST /pokemons",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () { // Проверка статуса кода по заданию 7 тест на 201 статус ответа бекэнда\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.collectionVariables.set(\"new_my_pokemon_id\", jsonData.id); // Создаем переменную new_my_pokemon_id"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "YOUR_TRAINER_TOKEN",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "trainer_token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{$randomFirstName}}\",\r\n    \"photo\": \"https://dolnikov.ru/pokemons/albums/1000.png\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/pokemons",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"pokemons"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "8. GET /pokemons",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/pokemons?in_pokeball=0&trainer_id=YOUR_TRAINER_ID",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"pokemons"
+					],
+					"query": [
+						{
+							"key": "in_pokeball",
+							"value": "0"
+						},
+						{
+							"key": "trainer_id",
+							"value": "YOUR_TRAINER_ID"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9. PUT /pokemons",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "YOUR_TRAINER_TOKEN",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "trainer_token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pokemon_id\": \"{{new_my_pokemon_id}}\",\r\n    \"name\": \"{{$randomFirstName}}\",\r\n    \"photo\": \"https://dolnikov.ru/pokemons/albums/008.png\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/pokemons",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"pokemons"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10. PATCH /pokemons",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "YOUR_TRAINER_TOKEN",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "trainer_token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pokemon_id\": \"{{new_my_pokemon_id}}\",\r\n    \"name\": \"{{$randomFirstName}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/pokemons",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"pokemons"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "11. POST /pokemons/knockout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "YOUR_TRAINER_TOKEN",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "trainer_token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pokemon_id\": \"{{new_my_pokemon_id}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/pokemons/knockout",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"pokemons",
+						"knockout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "12. POST /trainers/add_pokeball",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest(\"https://api.pokemonbattle.me/v2/pokemons?in_pokeball=0&trainer_id=YOUR_TRAINER_ID&status=1\",\r",
+							"function (err, response) {\r",
+							"var jsonData = response.json(); // Сохраним весь ответ в переменную jsonData\r",
+							"        var pokemon_id = jsonData['data'][0].id; //\r",
+							"        pm.collectionVariables.set(\"pokemon_id\", pokemon_id); // Cохраняем id своего первого покемона не в нокауте покемона не в покеболе переменные\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "YOUR_TRAINER_TOKEN",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "trainer_token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pokemon_id\": \"{{pokemon_id}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/trainers/add_pokeball",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"trainers",
+						"add_pokeball"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "13. PUT /trainers/delete_pokeball",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest(\"https://api.pokemonbattle.me/v2/pokemons?in_pokeball=1&trainer_id=YOUR_TRAINER_ID&status=1\", //Ищем своего покемона в покеболе\r",
+							"function (err, response) {\r",
+							"var jsonData = response.json(); // Сохраним весь ответ в переменную jsonData\r",
+							"        var pokemon_id = jsonData['data'][0].id; //\r",
+							"        pm.collectionVariables.set(\"pokemon_id\", pokemon_id); // Cохраняем id своего первого покемона не в нокауте покемона но в покеболе в переменные\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "YOUR_TRAINER_TOKEN",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "trainer_token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pokemon_id\": \"{{pokemon_id}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/trainers/delete_pokeball",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"trainers",
+						"delete_pokeball"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "14. POST /battle",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest(\"https://api.pokemonbattle.me/v2/pokemons?in_pokeball=1\", \r",
+							"function (err, response) {\r",
+							"var jsonData = response.json(); // Сохраним весь ответ в переменную jsonData\r",
+							" for (var i = 0; i < jsonData['data'].length; i++) {\r",
+							"    if (jsonData['data'][i].trainer_id == \"YOUR_TRAINER_ID\") { // Переберем в цикле своего покемона в покеболе\r",
+							"        var pokemon_id = jsonData['data'][i].id; //\r",
+							"        pm.collectionVariables.set(\"pokemon_id\", pokemon_id); // Cохраняем id своего покемона в переменные\r",
+							"    }\r",
+							"\r",
+							"    if (jsonData['data'][i].trainer_id != \"YOUR_TRAINER_ID\" && jsonData['data'][i].stage == \"1\" && jsonData['data'][i].in_pokeball == \"1\") { // Переберем в цикле чужого покемона в покеболе со stage 1\r",
+							"    var enemy_id = jsonData['data'][i].id; \r",
+							"    pm.collectionVariables.set(\"enemy_id\", enemy_id); // Cохраняем id противника в переменную коллекции enemy_id\r",
+							"    }\r",
+							" }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "YOUR_TRAINER_TOKEN",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "trainer_token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"attacking_pokemon\": \"{{pokemon_id}}\",\r\n    \"defending_pokemon\": \"{{enemy_id}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/battle",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"battle"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "15. GET /battle",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/battle?trainer_id=YOUR_TRAINER_ID",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"battle"
+					],
+					"query": [
+						{
+							"key": "trainer_id",
+							"value": "YOUR_TRAINER_ID",
+							"description": "Мой тренер"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "16. GET /debug_sentry",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/debug_sentry",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"debug_sentry"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "17. POST /trainers/download_history_done",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "YOUR_TRAINER_TOKEN",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "trainer_token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/trainers/download_history_done",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"trainers",
+						"download_history_done"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "18. POST /buy_avatar",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "YOUR_TRAINER_TOKEN",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "trainer_token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"card_number\": \"CARD_NUMBER\",\r\n  \"secure_code\": \"SMS_CODE\",           // пароль из смс\r\n  \"card_name\": \"HOLDER_NAME\",\r\n  \"card_cvv\": \"CVV\",\r\n  \"card_actual\": \"MM/DD\",           // дата\r\n  \"avatar_id\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://lavka.pokemonbattle.me//buy_avatar",
+					"protocol": "https",
+					"host": [
+						"lavka",
+						"pokemonbattle",
+						"me"
+					],
+					"path": [
+						"",
+						"buy_avatar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "19. GET /history",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "YOUR_TRAINER_TOKEN",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "trainer_token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://lavka.pokemonbattle.me/history",
+					"protocol": "https",
+					"host": [
+						"lavka",
+						"pokemonbattle",
+						"me"
+					],
+					"path": [
+						"history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "20. POST /trainers/kafka",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "YOUR_TRAINER_TOKEN",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "trainer_token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://buro.pokemonbattle.me/trainers/kafka",
+					"protocol": "https",
+					"host": [
+						"buro",
+						"pokemonbattle",
+						"me"
+					],
+					"path": [
+						"trainers",
+						"kafka"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "https://api.pokemonbattle.me/v2",
+			"type": "string"
+		},
+		{
+			"key": "trainer_token",
+			"value": "YOUR_TRAINER_TOKEN",
+			"type": "string"
+		},
+		{
+			"key": "trainer_id",
+			"value": ""
+		},
+		{
+			"key": "new_my_pokemon_id",
+			"value": ""
+		},
+		{
+			"key": "pokemon_id",
+			"value": ""
+		},
+		{
+			"key": "enemy_id",
+			"value": ""
+		}
+	]
+}
